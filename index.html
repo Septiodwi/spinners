@@ -4,26 +4,25 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="jquery-ui.min.js"></script>
 	<script type="text/javascript" src="src/rouletteWheel.js"></script>
-	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			var names = [];
 			var textarea = document.querySelector('textarea#name');
 			var cek = textarea.value.split('\n');
-			// var log = document.getElementById('name').value.split(/\n/);
+			var log = document.getElementById('name').value.split(/\n/);
 
 			// var i;
 			// for (i = cek.lenght; i < cek.length; i++) {
 			// i = [];
 			// }
 			
-			$( "textarea" ).keyup(function() {
-				var value = $( this ).val();
-				var key = $( this ).val().split('\n') ;
-				var items = key;
-			console.log(key);
-			}).keyup();
+			// $( "textarea" ).keyup(function() {
+			// 	var value = $( this ).val();
+			// 	var key = $( this ).val().split('\n') ;
+			// }).keyup();
 			
+			console.log(log);
+				var items = log;
 			
 			// function updateValue() {
 			// names = cek;
@@ -38,7 +37,7 @@
 		// });
 
 		  $('#canvas').rouletteWheel({
-		    items : 'items',
+		    items : items,
 		    selected : function(key, value){
 		      alert('SELECTED : ' + key + ' => ' + value);
 		    },
@@ -52,11 +51,12 @@
 <body>
 
 	<canvas id="canvas" width="500" height="500"></canvas>
-	<textarea name="" id="name" cols="30" rows="10">babi
-babi
-babi
-babi
-babi</textarea>
+	<textarea name="" id="name" cols="30" rows="10">Item 1
+Item 2
+Item 3
+Item 4
+Item 5
+Item 6</textarea>
 <p></p>
 <br>
 <button type="button">Set Textarea Value</button>
