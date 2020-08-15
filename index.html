@@ -16,13 +16,20 @@
 			// i = [];
 			// }
 			
-			// $( "textarea" ).keyup(function() {
-			// 	var value = $( this ).val();
-			// 	var key = $( this ).val().split('\n') ;
-			// }).keyup();
+			$( "textarea" ).keyup(function() {
+				var value = $( this ).val();
+				var key = $( this ).val().split('\n') ;
+				console.log(key);
+				var items = key;
+				
+			$('#canvas').rouletteWheel({
+				items : items,
+				selected : function(key, value){
+				alert('SELECTED : ' + key + ' => ' + value);
+				},
+				spinText : 'Click Me', })
 			
-			console.log(log);
-				var items = log;
+			}).keyup();
 			
 			// function updateValue() {
 			// names = cek;
@@ -36,13 +43,12 @@
 		// 	});
 		// });
 
-		  $('#canvas').rouletteWheel({
-		    items : items,
-		    selected : function(key, value){
-		      alert('SELECTED : ' + key + ' => ' + value);
-		    },
-		    spinText : 'Click Me',
-		  });
+		//   $('#canvas').rouletteWheel({
+		//     items : items,
+		//     selected : function(key, value){
+		//       alert('SELECTED : ' + key + ' => ' + value);
+		//     },
+		//     spinText : 'Click Me', });
 
 		});
 	</script>
