@@ -5,32 +5,64 @@
 	<script type="text/javascript" src="jquery-ui.min.js"></script>
 	<script type="text/javascript" src="src/rouletteWheel.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			var names = [];
-			var textarea = document.querySelector('textarea#name');
-			var cek = textarea.value.split('\n');
-			var log = document.getElementById('name').value.split(/\n/);
+
+		var Qwheel = {};
+		function generateWheel(items){
+			var canvas = document.getElementById('test');
+			var context = canvas.getContext('2d');
+
+			// do some drawing
+			context.clear();
+			var roulettePars = {
+					items : items,
+					start : function() {
+						try { audioElement.play(); } catch (err) {}
+					},
+
+					selected : function(key, value) {
+					console.log("selected:", key, value);
+					try { audioElement.pause();
+							audioElement.currentTime = 0; } catch (err) {}
+
+					// accumStats(statsObj, key, Qwheel.session.curNames.length);
+					// saveStats(statsObj);
+					// if (window.confirm("Selected: "+(Qwheel.session.allNameObj[value]||value)+".\n Remove?" )) {
+					// 	var newNames = [];
+					// 	for (var i=0; i < Qwheel.session.curNames.length; i++) {
+					// 	if (value != Qwheel.session.curNames[i])
+					// 		newNames.push(Qwheel.session.curNames[i]);
+					// 	}
+					// 	Qwheel.session.curNames = newNames;
+					// 	wheelState[Qwheel.session.sessionID].names = Qwheel.session.curNames.join(";");
+					// 	setState(wheelState);
+					// }
+					// if (Qwheel.session.curNames.length < minDisplay) {
+					// 	Qwheel.session.wheelRestart();
+					// } else {
+					// 	reloadPage(Qwheel.session.sessionID);
+					// }
+					},
+					spinText : "SPIN",
+				}
+				c.rouletteWheel(roulettePars);
+		}
+		$(function() {
+			// var names = [];
+			// var textarea = document.querySelector('textarea#name');
+			// var cek = textarea.value.split('\n');
+			// var log = document.getElementById('name').value.split(/\n/);
 
 			// var i;
 			// for (i = cek.lenght; i < cek.length; i++) {
 			// i = [];
 			// }
+			var key = $( "textarea" ).val().split('\n') ;
+			generateWheel(key);
 			
-			$( "textarea" ).keyup(function() {
-				var value = $( this ).val();
-				var key = $( this ).val().split('\n') ;
-				console.log(key);
-				var items = key;
-				
-			$('#canvas').rouletteWheel({
-				items : items,
-				selected : function(key, value){
-				alert('SELECTED : ' + key + ' => ' + value);
-				},
-				spinText : 'Click Me', })
-			
-			}).keyup();
-			
+			$("button").click(function(){
+				var key = $( "textarea" ).val().split('\n') ;
+			generateWheel(key);
+			});
 			// function updateValue() {
 			// names = cek;
 			// }
@@ -55,9 +87,8 @@
 	<title></title>
 </head>
 <body>
-
-	<canvas id="canvas" width="500" height="500"></canvas>
-	<textarea name="" id="name" cols="30" rows="10">Item 1
+<canvas id="test" width="500px" height="500px"></canvas>
+	<textarea id="test" cols="30" rows="10">Item 1
 Item 2
 Item 3
 Item 4
