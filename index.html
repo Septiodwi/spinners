@@ -1,101 +1,248 @@
-<!DOCTYPE html>
 <html>
-<head>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="jquery-ui.min.js"></script>
-	<script type="text/javascript" src="src/rouletteWheel.js"></script>
-	<script type="text/javascript">
+    <head>
+        <title>HTML5 Canvas Winning Wheel</title>
+        <link rel="stylesheet" href="main.css" type="text/css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="../../Winwheel.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    </head>
+    <body>
+        <div align="center">
+            <h1>Winwheel.js example wheel - wheel of fortune</h1>
+            <p>Here is an example of a code-drawn Wheel of Fortune looking wheel which spins to a stop with the prize won alerted to the user.</p>
+            <br />
+            <p>
+                With some additional coding it could be made so that the prize won is added to a total after each spin rather than
+                just alerting the prize to make a proper wheel of fortune like game.
+            </p>
+            <br />
+            <p>Choose a power setting then press the Spin button. You will be alerted to the prize won when the spinning stops.</p>
+            <br />
+            <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td>
+                    <div class="power_controls">
+                        <br />
+                        <br />
+                        <br />
+                        <img id="spin_button" src="spin_off.png" alt="Spin" onClick="startSpin();" />
+                        <br /><br />
+                        &nbsp;&nbsp;<a href="#" onClick="resetWheel(); return false;">Play Again</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reset)
+                    </div>
+                </td>
+                <td width="438" height="582" class="the_wheel" align="center" valign="center">
+                    <canvas  id="canvas" width="434" height="434">
+                        <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                    </canvas>
+                </td>
+                <textarea></textarea>
+                <button id="add">test</button>
+                <input type="text" id="name">
+            </tr>
+        </table>
+        <script>
+            $(function(){
 
-		var Qwheel = {};
-		function generateWheel(items){
-			var canvas = document.getElementById('test');
-			var context = canvas.getContext('2d');
+            //     $("#delete").click(function(){
+            //         var postition = theWheel.getIndicatedSegmentNumber();
+            //         console.log(postition);
+            //         theWheel.deleteSegment(postition);
+            //         theWheel.draw();
+            //     });
+            
+            $("#add").click(function(){
+                    var r = Math.floor(Math.random() * (255 - 0 + 1) + 0);
+                    var g = Math.floor(Math.random() * (255 - 0 + 1) + 0);
+                    var b = Math.floor(Math.random() * (255 - 0 + 1) + 0);
+                    
+                    var rgbString = r + ", " + g + ", " + b;
+                    
+                    var t = $( "textarea" ).data('isgenerated');
+                    var key = $( "textarea" ).val().split('\n') ;
+                    
+                    $.each(key, function(index, value){
+                        theWheel.deleteSegment(index);
+                    });
+                    theWheel.draw();
+                    
+                    $.each(key, function(index, value){
+                        theWheel.addSegment({
+                            'text' : value,
+                            'fillStyle' : 'red'   
+                        }, 1);
+                    });
+                    if (t == true) theWheel.deleteSegment();
+                console.log(r);
+                theWheel.draw();
+                $("textarea").data('isgenerated', true);
+                })
+            });
+            
+           
+            var theWheel = new Winwheel({
+                'outerRadius'     : 212,        // Set outer radius so wheel fits inside the background.
+                'innerRadius'     : 75,         // Make wheel hollow so segments don't go all way to center.
+                'textFontSize'    : 18,         // Set default font size for the segments.
+                'textOrientation' : 'horizontal', // Make text vertial so goes down from the outside of wheel.
+                'textAlignment'   : 'outer  ',    // Align text to outside of wheel.
+                'textFontFamily' : 'Arial',
+                'numSegments'     : 0,         // Specify number of segments.
+                'segments'        :             // Define segments including colour and text.
+                [                               // font size and test colour overridden on backrupt segments.
+               
+                ],
+                'animation' :           // Specify the animation to use.
+                {
+                    'type'     : 'spinToStop',
+                    'duration' : 5,     // Duration in seconds.
+                    'spins'    : 8,     // Default number of complete spins.
+                    'callbackFinished' : alertPrize,
+                    'callbackSound'    : playSound,   // Called when the tick sound is to be played.
+                    'soundTrigger'     : 'pin'   
+                },
+                'pins' :
+                {
+                    'number' : 6   // Number of pins. They space evenly around the wheel.
+                }
+            });
 
-			// do some drawing
-			context.clear();
-			var roulettePars = {
-					items : items,
-					start : function() {
-						try { audioElement.play(); } catch (err) {}
-					},
+            // Vars used by the code in this page to do power controls.
+            var audio = new Audio('tick.mp3');
+ 
+            // This function is called when the sound is to be played.
+            function playSound()
+            {
+                // Stop and rewind the sound if it already happens to be playing.
+                audio.pause();
+                audio.currentTime = 0;
+ 
+                // Play the sound.
+                audio.play();
+            }
 
-					selected : function(key, value) {
-					console.log("selected:", key, value);
-					try { audioElement.pause();
-							audioElement.currentTime = 0; } catch (err) {}
+            var wheelPower    = 0;
+            var wheelSpinning = false;
 
-					// accumStats(statsObj, key, Qwheel.session.curNames.length);
-					// saveStats(statsObj);
-					// if (window.confirm("Selected: "+(Qwheel.session.allNameObj[value]||value)+".\n Remove?" )) {
-					// 	var newNames = [];
-					// 	for (var i=0; i < Qwheel.session.curNames.length; i++) {
-					// 	if (value != Qwheel.session.curNames[i])
-					// 		newNames.push(Qwheel.session.curNames[i]);
-					// 	}
-					// 	Qwheel.session.curNames = newNames;
-					// 	wheelState[Qwheel.session.sessionID].names = Qwheel.session.curNames.join(";");
-					// 	setState(wheelState);
-					// }
-					// if (Qwheel.session.curNames.length < minDisplay) {
-					// 	Qwheel.session.wheelRestart();
-					// } else {
-					// 	reloadPage(Qwheel.session.sessionID);
-					// }
-					},
-					spinText : "SPIN",
-				}
-				c.rouletteWheel(roulettePars);
-		}
-		$(function() {
-			// var names = [];
-			// var textarea = document.querySelector('textarea#name');
-			// var cek = textarea.value.split('\n');
-			// var log = document.getElementById('name').value.split(/\n/);
+            // -------------------------------------------------------
+            // Function to handle the onClick on the power buttons.
+            // -------------------------------------------------------
+            function powerSelected(powerLevel)
+            {
+                // Ensure that power can't be changed while wheel is spinning.
+                if (wheelSpinning == false)
+                {
+                    // Reset all to grey incase this is not the first time the user has selected the power.
+                    document.getElementById('pw1').className = "";
+                    document.getElementById('pw2').className = "";
+                    document.getElementById('pw3').className = "";
 
-			// var i;
-			// for (i = cek.lenght; i < cek.length; i++) {
-			// i = [];
-			// }
-			var key = $( "textarea" ).val().split('\n') ;
-			generateWheel(key);
-			
-			$("button").click(function(){
-				var key = $( "textarea" ).val().split('\n') ;
-			generateWheel(key);
-			});
-			// function updateValue() {
-			// names = cek;
-			// }
+                    // Now light up all cells below-and-including the one selected by changing the class.
+                    if (powerLevel >= 1)
+                    {
+                        document.getElementById('pw1').className = "pw1";
+                    }
 
-			
-		// 	$(document).ready(function(){
-		// 	var textContent =  document.getElementById('name').value.split(/\n/) ;
-		// 	$("button").click(function(){
-		// 		$("#name").val(textContent);
-		// 	});
-		// });
+                    if (powerLevel >= 2)
+                    {
+                        document.getElementById('pw2').className = "pw2";
+                    }
 
-		//   $('#canvas').rouletteWheel({
-		//     items : items,
-		//     selected : function(key, value){
-		//       alert('SELECTED : ' + key + ' => ' + value);
-		//     },
-		//     spinText : 'Click Me', });
+                    if (powerLevel >= 3)
+                    {
+                        document.getElementById('pw3').className = "pw3";
+                    }
 
-		});
-	</script>
-	<title></title>
-</head>
-<body>
-<canvas id="test" width="500px" height="500px"></canvas>
-	<textarea id="test" cols="30" rows="10">Item 1
-Item 2
-Item 3
-Item 4
-Item 5
-Item 6</textarea>
-<p></p>
-<br>
-<button type="button">Set Textarea Value</button>
-</body>
+                    // Set wheelPower var used when spin button is clicked.
+                    wheelPower = powerLevel;
+
+                    // Light up the spin button by changing it's source image and adding a clickable class to it.
+                    document.getElementById('spin_button').src = "spin_on.png";
+                    document.getElementById('spin_button').className = "clickable";
+                }
+            }
+
+            // -------------------------------------------------------
+            // Click handler for spin button.
+            // -------------------------------------------------------
+            function startSpin()
+            {
+                // Ensure that spinning can't be clicked again while already running.
+                if (wheelSpinning == false)
+                {
+
+                    // Begin the spin animation by calling startAnimation on the wheel object.
+                    theWheel.startAnimation();
+
+                    wheelSpinning = false;
+
+                    theWheel.rotationAngle = 0;  
+                    theWheel.draw();
+                    // theWheel.stopAnimation(false);
+                }
+                
+        }
+
+            // -------------------------------------------------------
+            // Function for reset button.
+            // -------------------------------------------------------
+            function resetWheel()
+            {
+                theWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+                theWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+                theWheel.draw();                // Call draw to render changes to the wheel.
+
+                document.getElementById('pw1').className = "";  // Remove all colours from the power level indicators.
+                document.getElementById('pw2').className = "";
+                document.getElementById('pw3').className = "";
+
+                wheelSpinning = false;          // Reset to false to power buttons and spin can be clicked again.
+            }
+
+            // -------------------------------------------------------
+            // Called when the spin animation has finished by the callback feature of the wheel because I specified callback in the parameters.
+            // -------------------------------------------------------
+            function alertPrize(indicatedSegment)
+            {
+                console.log(indicatedSegment);
+                var pop = indicatedSegment.text;
+                var r = confirm('you win');
+                if (r == true) {
+                    var postition = theWheel.getIndicatedSegmentNumber();
+                    console.log(postition);
+                    theWheel.deleteSegment(postition);
+                    theWheel.draw();
+                } else {
+                    txt = "";
+                }
+            }
+
+            // var name = 
+
+            // var randomColor = '#name' + Math.floor(Math.random()*16777215).toString(16);
+
+            function addSegmentred()
+            {
+                // Use a date object to set the text of each added segment to the current minutes:seconds
+                // (just to give each new segment a different label).
+       
+                // The Second parameter in the call to addSegment specifies the position,
+                // in this case 1 meaning the new segment goes at the start of the wheel.
+                theWheel.addSegment({
+                    'text' : document.getElementById('name').value,
+                    'fillStyle' : 'red'  
+                }, 1);
+        
+                // The draw method of the wheel object must be called in order for the changes
+                // to be rendered.
+                theWheel.draw();
+            }
+
+            function deleteSegment()
+            {
+                theWheel.deleteSegment();
+        
+                theWheel.draw();
+            }
+        </script>
+    </body>
 </html>
