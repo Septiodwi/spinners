@@ -127,8 +127,8 @@ canvas {
 }
 
 .box-text-area {
-    margin-top: 50%;
-    margin-left: 50%;
+    margin-top: -15%;
+    margin-left: 3%;
 
     /* margin-left: 190%; */
 
@@ -145,16 +145,16 @@ canvas {
     padding: 10px;
     padding-left: 10px;
     background-color: white;
-    width: 140%;
+    width: 108%;
     border: none;
-    margin-left: 10%;
-    margin-top: -50%;
+    margin-left: 0;
+    margin-top: -20%;
 }
 
 @media (min-width: 576px) {
     .text-area {
-        width: 140%;
-        margin-left: 50%;
+        width: 100%;
+        margin-left: 30%;
         margin-top: 0;
     }
 }
@@ -162,7 +162,7 @@ canvas {
 .btn-update {
     font-size: 20px;
     margin-top: 20px;
-    margin-left: 32%;
+    margin-left: 22%;
     background-color: white;
     width: 200px;
     border: none;
@@ -175,7 +175,7 @@ canvas {
         margin-bottom: 0px;
         padding: 20px;
         margin-top: 20px;
-        margin-left: 75%;
+        margin-left: 50%;
     }
 }
 
