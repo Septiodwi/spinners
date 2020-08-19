@@ -11,18 +11,18 @@ Verison History:
 */
 @font-face {
     font-family: kanit;
-    src: url(../wheel-of-fortune/font/Kanit/Kanit-Medium.ttf);
+    src: url(../font/Kanit/Kanit-Medium.ttf);
 }
 
 body {
-    background-image: url(../wheel-of-fortune/img-background/2551079.jpg);
+    background-image: url(../img-background/2551079.jpg);
     font-family: kanit;
     background-size: cover;
 }
 
 /* Sets the background image for the wheel */
 td.the_wheel {
-    background-image: url(./Group\ 2.png);
+    background-image: url(../img-background/Group2.png);
     background-position: center;
     background-repeat: no-repeat;
     width: 400px;
@@ -63,7 +63,7 @@ div.power_controls {
 
 @media (min-width: 576px) {
     div.power_controls {
-        margin-left: ;
+        margin-left: 0;
     }
 }
 
@@ -124,7 +124,6 @@ canvas {
         padding: 0;
         margin-left: -30%;
     }
-}
 }
 
 .box-text-area {

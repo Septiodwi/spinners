@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Spinner</title>
-    <link rel="shortcut icon" type="image/x-icon" href="gold 1.png">
-    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="shortcut icon" type="image/x-icon" href="img-background/gold 1.png">
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="Winwheel.js"></script>
+    <script type="text/javascript" src="js/Winwheel.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 </head>
 
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-4">
 
-                <button id="spin_button" src="spin_off.png" alt="Spin" onClick="startSpin();"
+                <button id="spin_button" src="img-background/spin_off.png" alt="Spin" onClick="startSpin();"
                     class="btn-spin btn-update">Spin</button>
 
 
@@ -143,7 +143,7 @@
         });
 
         // Vars used by the code in this page to do power controls.
-        var audio = new Audio('tick.mp3');
+        var audio = new Audio('mp3/tick.mp3');
 
         // This function is called when the sound is to be played.
         function playSound() {
@@ -186,7 +186,7 @@
                 wheelPower = powerLevel;
 
                 // Light up the spin button by changing it's source image and adding a clickable class to it.
-                document.getElementById('spin_button').src = "spin_on.png";
+                document.getElementById('spin_button').src = "img-background/spin_on.png";
                 document.getElementById('spin_button').className = "clickable";
             }
         }
