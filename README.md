@@ -1,2 +1,3 @@
 # Wheel of fortune
 
+"# spinners" 
