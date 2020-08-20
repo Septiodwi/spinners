@@ -12,11 +12,15 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="js/Winwheel.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-    <script type="text/javascript" src="js/excanvas.js"></script>
+
 </head>
 
 <body>
     <div class="container">
+        <audio autoplay>
+            <source src="mp3/play.mp3" type="audio/mpeg">
+          </audio>
+          
         <!-- col-update -->
         <div class="row">
             <div class="col-lg-4">
@@ -133,14 +137,14 @@
             'animation': // Specify the animation to use.
             {
                 'type': 'spinToStop',
-                'duration': 5, // Duration in seconds.
+                'duration': 15, // Duration in seconds.
                 'spins': 8, // Default number of complete spins.
                 'callbackFinished': alertPrize,
                 'callbackSound': playSound, // Called when the tick sound is to be played.
                 'soundTrigger': 'pin'
             },
             'pins': {
-                'number': 6 // Number of pins. They space evenly around the wheel.
+                'number': 10 // Number of pins. They space evenly around the wheel.
             }
         });
 
@@ -273,33 +277,6 @@
 
             theWheel.draw();
         }
-
-         function createCookie(name, value, days) {
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                    var expires = "; expires=" + date.toGMTString();
-                }
-                else var expires = "";               
-
-                document.cookie = name + "=" + value + expires + "; path=/";
-            }
-
-            function readCookie(name) {
-                var nameEQ = name + "=";
-                var ca = document.cookie.split(';');
-                for (var i = 0; i < ca.length; i++) {
-                    var c = ca[i];
-                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-                }
-                return null;
-            }
-
-            function eraseCookie(name) {
-                createCookie(name, "", -1);
-            }
-
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
